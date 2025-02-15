@@ -5,9 +5,13 @@ import (
 	"server/db"
 	"server/internal/user"
 	"server/router"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	godotenv.Load()
+	
 	dbConn, err := db.NewDatabase()
 	if err != nil {
 		log.Fatalf("could not initialize the database instance: %s",err)
@@ -19,4 +23,5 @@ func main() {
 
 	router.InitRouter(userHandler)
 	router.StartRouter("0.0.0.0:8080")
+
 }
