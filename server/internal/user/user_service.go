@@ -39,7 +39,6 @@ func (s *service) CreateUser(ctx context.Context, req *CreateUserRequest) (*Crea
 	}
 
 	return res, nil
-
 }
 
 func NewService(repository IRepository) IService {
