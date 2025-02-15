@@ -10,5 +10,11 @@ createdb:
 dropdb:
 	docker exec -tr postgresCardgame dropdb cardgame_db
 
+migrateup:
+	migrate -path db/migrations -database "postgresql://root:password@localhost:5433/cardgame_db?sslmode=disable" --verbose up
 
-.PHONY: postgresinit postgres createdb dropdb
+migratedown:
+	migrate -path db/migrations -database "postgresql://root:password@localhost:5433/cardgame_db?sslmode=disable" --verbose down
+
+
+.PHONY: postgresinit postgres createdb dropdb migrateup migratedown
