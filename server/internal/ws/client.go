@@ -14,6 +14,11 @@ type Client struct {
 	RoomId 		string `json:"roomId"`
 }
 
+type ClientResponse struct {
+	Id 			string `json:"id"`
+	Username 	string `json:"username"`
+}
+
 type Message struct {
 	Content string `json:"content"`
 	RoomId 	string `json:"roomId"`
@@ -24,7 +29,7 @@ type Message struct {
 }
 
 
-// writes messages incoming from the Message channel to the WebSocket connection in a loop
+// Writes messages incoming from the Message channel to the WebSocket connection in a loop
 func (c *Client) WriteMessage() {
 	defer func() {
 		c.Connection.Close()
@@ -40,7 +45,7 @@ func (c *Client) WriteMessage() {
 	}
 }
 
-// reads messages incoming from the WebSocket connection in a loop and writes it to the hub's Broadcast channel
+// Reads incoming messages from the WebSocket connection and writes it to the hub's Broadcast channel in a loop
 func (c *Client) ReadMessage(hub *Hub) {
 	defer func() {
 		hub.Unregister <- c

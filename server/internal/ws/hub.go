@@ -11,6 +11,12 @@ type CreateRoomRequest struct {
 	Name string `json:"name"`
 }
 
+type RoomResponse struct {
+	Id          string `json:"id"`
+	Name        string `json:"name"`
+	ClientCount int    `json:"clientCount"`
+}
+
 type Hub struct {
 	Rooms      map[string]*Room
 	Register   chan *Client
@@ -27,7 +33,7 @@ func NewHub() *Hub {
 	}
 }
 
-// Run function that runs on a separate Go routine
+// Main hub function that runs on a separate Go routine and handles the Hub channels
 func (h *Hub) Run() {
 	for {
 		select {

@@ -82,4 +82,30 @@ func (h *Handler) JoinRoom(ctx *gin.Context) {
 	cl.ReadMessage(h.Hub)
 }
 
+func (h *Handler) GetRooms(ctx *gin.Context) {
+	rooms := make([]RoomResponse,0)
+	for _, r := range h.Hub.Rooms {
+		rooms = append(rooms, RoomResponse{
+			Id: r.Id,
+			Name: r.Name,
+			ClientCount: len(r.Clients),
+		})
+	}
+	ctx.JSON(http.StatusOK,rooms)
+}
+
+func (h *Handler) GetClients(ctx *gin.Context) {
+	clients := make([]ClientResponse,0)
+	roomId := ctx.Param("roomId")
+
+	if _, ok := h.Hub.Rooms[roomId]; ok {
+		for _, c := range h.Hub.Rooms[roomId].Clients {
+			clients = append(clients, ClientResponse{
+				Id: c.Id,
+				Username: c.Username,
+			})
+		}
+	}
+	ctx.JSON(http.StatusOK, clients)
+}
 

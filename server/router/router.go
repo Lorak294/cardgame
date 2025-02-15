@@ -20,6 +20,8 @@ func InitRouter(userHandler *user.Handler, wsHandler *ws.Handler) {
 	// ws endpoints
 	r_eng.POST("/ws/createRoom",wsHandler.CreateRoom)
 	r_eng.GET("/ws/joinRoom/:roomId",wsHandler.JoinRoom)
+	r_eng.GET("/ws/getRooms",wsHandler.GetRooms)
+	r_eng.GET("/ws/getClients/:roomId",wsHandler.GetClients)
 
 }
 
