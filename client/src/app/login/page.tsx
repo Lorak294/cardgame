@@ -65,7 +65,7 @@ const page = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
         <button
-          className="p-3 mt-6 rounded-md bg-blue font-bold text-whitte"
+          className="p-3 mt-6 rounded-md bg-blue font-bold text-white"
           type="submit"
           onClick={submitHandler}
         >
