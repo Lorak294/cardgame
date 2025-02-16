@@ -1,12 +1,23 @@
-import React, { useState } from "react";
+"use client";
+
+import React, { useState, useContext, useEffect } from "react";
 import { API_URL } from "@/constants";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+import { AuthContext, UserInfo } from "@/modules/auth_provider";
 
 const page = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { authenticated } = useContext(AuthContext);
 
   const router = useRouter();
+
+  useEffect(() => {
+    if (authenticated) {
+      router.push("/");
+      return;
+    }
+  }, [authenticated]);
 
   const submitHandler = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -20,7 +31,7 @@ const page = () => {
 
       const data = await response.json();
       if (response.ok) {
-        const user = {
+        const user: UserInfo = {
           username: data.username,
           id: data.id,
         };
