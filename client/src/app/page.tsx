@@ -1,14 +1,20 @@
 "use client";
 
-import { API_URL } from "@/constants";
-import React, { useState, useEffect } from "react";
+import { API_URL, WEBSOCKET_URL } from "@/constants";
+import React, { useState, useEffect, useContext } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { AuthContext } from "@/modules/auth_provider";
+import { WebSocketContext } from "@/modules/ws_provider";
+import { useRouter } from "next/navigation";
 
 const Home = () => {
   const [roooms, setRooms] = useState<
     { id: string; name: string; playerCount: number }[]
   >([]);
   const [newRoomName, setNewRoomName] = useState("");
+  const { user } = useContext(AuthContext);
+  const { setConnection } = useContext(WebSocketContext);
+  const router = useRouter();
 
   useEffect(() => {
     getRooms();
@@ -52,6 +58,17 @@ const Home = () => {
     }
   };
 
+  const joinRoom = (roomId: string) => {
+    const ws = new WebSocket(
+      `${WEBSOCKET_URL}/ws/joinRoom/${roomId}?userId=${user.id}&username=${user.username}`
+    );
+
+    if (ws.OPEN) {
+      setConnection(ws);
+      router.push("/room");
+    }
+  };
+
   return (
     <>
       <div className="my-8 px-4 md:mx-32 w-full h-full">
@@ -83,7 +100,10 @@ const Home = () => {
                   <div className="text-blue font-bold text-lg">{room.name}</div>
                 </div>
                 <div className="">
-                  <button className="px-4 text-white bg-blue rounded-md">
+                  <button
+                    className="px-4 text-white bg-blue rounded-md"
+                    onClick={() => joinRoom(room.id)}
+                  >
                     Join
                   </button>
                 </div>
